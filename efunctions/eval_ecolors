@@ -1,3 +1,7 @@
+#!/bin/sh
+# Copyright (c) 2015 Marcus Downing <marcus.downing@gmail.com>
+# Released under the 2-clause BSD license.
+
 GOOD=''
 WARN=''
 BAD=''
@@ -9,9 +13,9 @@ if [ ! -z "$TERM" ]
 then
 	if [ "$TERM" != "dumb" -a "$TERM" != "unknown" ]
 	then
-		if [ ! -z $(command -v tput) ]
+		if [ ! -z "$(command -v tput)" ]
 		then
-			tput colors &> /dev/null
+			tput colors > /dev/null 2>&1
 			if [ $? ]
 			then
 				GOOD=`tput sgr0; tput bold; tput setf 2`
@@ -22,7 +26,7 @@ then
 				NORMAL=`tput sgr0; tput setf 7`
 			fi
 		fi
-		fi
+	fi
 fi
 
 echo "GOOD='$GOOD'"

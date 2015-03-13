@@ -2,10 +2,8 @@
 # Copyright (c) 2015 Marcus Downing <marcus.downing@gmail.com>
 # Released under the 2-clause BSD license.
 
-. efunctions_ecolors
-efunctions_indent
-
-if [ ! -z "$GOOD" ]; then
-	tput ll
-fi
-echo "$NORMAL $GOOD*$NORMAL $@"
+EINFO_INDENT=${EINFO_INDENT:-0}
+for I in `seq 1 $EINFO_INDENT`
+do
+  echo -n " "
+done

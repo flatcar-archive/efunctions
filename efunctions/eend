@@ -1,7 +1,11 @@
+#!/bin/sh
+# Copyright (c) 2015 Marcus Downing <marcus.downing@gmail.com>
+# Released under the 2-clause BSD license.
+
 P=${1:-0}
 [ "$2" != "" ] && MSG="$(echo $@ | cut -d ' ' -f 2-)" || MSG=""
 
-eval $(eval_ecolors)
+. efunctions_ecolors
 
 if [ "$P" -ne 0 ]
 then

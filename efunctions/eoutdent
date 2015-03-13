@@ -2,10 +2,7 @@
 # Copyright (c) 2015 Marcus Downing <marcus.downing@gmail.com>
 # Released under the 2-clause BSD license.
 
-. efunctions_ecolors
-efunctions_indent
+EINFO_INDENT=$((${EINFO_INDENT:-0} - 2))
+if [ "$EINFO_INDENT" -lt 0 ] ; then EINFO_INDENT=0; fi
+export EINFO_INDENT
 
-if [ ! -z "$GOOD" ]; then
-	tput ll
-fi
-echo "$NORMAL $GOOD*$NORMAL $@"

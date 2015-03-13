@@ -1,33 +1,21 @@
+#!/bin/sh
+# Copyright (c) 2015 Marcus Downing <marcus.downing@gmail.com>
+# Released under the 2-clause BSD license.
+
 # Replicates Gentoo's functions.sh in a portable way
-# Obviously the borrow heavily from the original rc script
+# Obviously borrow heavily from the original rc script
 # written by Roy Marples
 
-eindent()
-{
-  EINFO_INDENT=$((${EINFO_INDENT:-0} + 2))
-  if [ "$EINFO_INDENT" -gt 40 ] ; then EINFO_INDENT=40; fi
-  export EINFO_INDENT
+eindent() {
+  . "$EFUNCTIONS_DIR/eindent"
 }
 
-eoutdent()
-{
-  EINFO_INDENT=$((${EINFO_INDENT:-0} - 2))
-  if [ "$EINFO_INDENT" -lt 0 ] ; then EINFO_INDENT=0; fi
-  export EINFO_INDENT
-}
-
-efunctions_indent()
-{
-  EINFO_INDENT=${EINFO_INDENT:-0}
-  for I in `seq 1 $EINFO_INDENT`
-  do
-    echo -n " "
-  done
+eoutdent() {
+  . "$EFUNCTIONS_DIR/eoutdent"
 }
 
 # http://stackoverflow.com/questions/1055671/how-can-i-get-the-behavior-of-gnus-readlink-f-on-a-mac
-function abspath {
-
+abspath() {
   if readlink -f "$1" 2>&1 | grep -q 'readlink: illegal option -- f'; then
     TARGET_FILE="$1"
 
@@ -54,14 +42,18 @@ function abspath {
   echo $RESULT
 }
 
-export -f 'efunctions_indent'
+if [ -x "/etc/init.d/functions.sh" ]; then
+  HERE="$(abspath "/etc/init.d/functions.sh")"
+else
+  HERE="$(abspath "$0")"
+fi
+DIR="$(dirname "$HERE")"
+export EFUNCTIONS_DIR="$DIR/efunctions"
+export PATH="$PATH:$EFUNCTIONS_DIR"
 
-#HERE=$(readlink -f "${BASH_SOURCE[0]}")
-HERE=$(abspath "${BASH_SOURCE[0]}")
-DIR=$(dirname "$HERE")
-FDIR="$DIR/efunctions"
-
-export PATH="$PATH:$FDIR"
+if [ -n "$TERM" ] && [ "$TERM" = unknown ] ; then
+  export TERM=dumb
+fi
 
 if [ -z "$TERMINFO" ]; then
   export TERMINFO=$(whereis terminfo | grep -o '^[^ ]* [^ ]*' | grep -o '[^ ]*$')
