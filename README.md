@@ -1,5 +1,7 @@
-efunctions
+efunctions archive
 ==========
+
+This project is not used anymore and was archived 2023-06-23.
 
 Port of Gentoo's functions.sh to other *nixes.
 
